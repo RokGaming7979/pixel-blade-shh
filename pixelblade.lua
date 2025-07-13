@@ -60,7 +60,9 @@ local function pressButtons(character)
     local prompts = {}
     for _, v in workspace:GetDescendants() do
         if v:IsA("ProximityPrompt") and v.Enabled then
-            if v.Parent.Name:lower():find("bossbutton") or v.Name:lower():find("bossbutton") then
+            -- Specifically target Vault.Button1 and Vault.Button2 proximity prompts
+            local parentName = v.Parent.Name:lower()
+            if parentName == "button1" or parentName == "button2" then
                 table.insert(prompts, v)
             end
         end
@@ -72,7 +74,7 @@ local function pressButtons(character)
         pcall(function()
             fireproximityprompt(prompt, prompt.HoldDuration or 1)
         end)
-        task.wait((prompt.HoldDuration or 1) + 0.1)
+        task.wait((prompt.HoldDuration or 1) + 0.2)
     end
 end
 
