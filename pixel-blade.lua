@@ -3,7 +3,6 @@ local player = game:GetService("Players").LocalPlayer
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
-local starterGui = game:GetService("StarterGui")
 
 -- Settings
 local roomcheck = false
@@ -11,7 +10,7 @@ local autofarm = true
 local killall = true
 local paused = false
 
--- Create Pause/Resume GUI Button for Mobile
+-- Create Pause/Resume GUI Button for Mobile (top-left corner)
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "AutoFarmToggleGui"
 screenGui.ResetOnSpawn = false
@@ -19,7 +18,7 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(0, 100, 0, 50)
-toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)  -- top-left corner
 toggleButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 toggleButton.TextColor3 = Color3.new(1, 1, 1)
 toggleButton.Font = Enum.Font.SourceSansBold
@@ -61,8 +60,9 @@ local function pressButtons(character)
     local prompts = {}
     for _, v in workspace:GetDescendants() do
         if v:IsA("ProximityPrompt") and v.Enabled then
-            -- Adjust this filter if needed for last boss buttons
-            if v.Parent.Name:lower():find("bossbutton") or v.Name:lower():find("bossbutton") then
+            -- Specifically target Vault.Button1 and Vault.Button2 proximity prompts
+            local parentName = v.Parent.Name:lower()
+            if parentName == "button1" or parentName == "button2" then
                 table.insert(prompts, v)
             end
         end
@@ -74,18 +74,16 @@ local function pressButtons(character)
         pcall(function()
             fireproximityprompt(prompt, prompt.HoldDuration or 1)
         end)
-        task.wait((prompt.HoldDuration or 1) + 0.1)
+        task.wait((prompt.HoldDuration or 1) + 0.2)
     end
 end
 
 -- Improved boss room detection and teleport
 local function enterFinalBossRoom(character)
-    -- Try several heuristics to find final boss room part(s)
     for _, v in workspace:GetDescendants() do
         if v:IsA("BasePart") then
             local lname = v.Name:lower()
             local parentName = v.Parent and v.Parent.Name:lower() or ""
-            -- Check common boss room naming patterns
             if lname:find("bossroom") or lname:find("finalroom") or parentName:find("bossroom") or parentName:find("finalroom") then
                 character.HumanoidRootPart.CFrame = v.CFrame + Vector3.new(0, 3, 0)
                 task.wait(1.5) -- Wait for boss to spawn
@@ -93,7 +91,6 @@ local function enterFinalBossRoom(character)
             end
         end
     end
-    -- fallback: try a known named folder or part (adjust as needed)
     local finalBossFolder = workspace:FindFirstChild("FinalBossRoom")
     if finalBossFolder then
         local part = finalBossFolder:FindFirstChildWhichIsA("BasePart")
@@ -108,7 +105,6 @@ end
 
 -- Main room function
 local function room(character)
-    -- Press all non-boss buttons
     for _, v in workspace:GetDescendants() do
         if v:IsA("ProximityPrompt") and v.Enabled then
             if not (v.Parent.Name:lower():find("bossbutton") or v.Name:lower():find("bossbutton")) then
@@ -122,7 +118,6 @@ local function room(character)
         end
     end
 
-    -- Exit zones
     for _, v in workspace:GetChildren() do
         if v:FindFirstChild("ExitZone") then
             character.HumanoidRootPart.CFrame = v.ExitZone.CFrame + Vector3.new(0, 2, 0)
@@ -132,10 +127,7 @@ local function room(character)
         end
     end
 
-    -- Press boss buttons (hold E)
     pressButtons(character)
-
-    -- Enter final boss room
     enterFinalBossRoom(character)
 
     roomcheck = false
