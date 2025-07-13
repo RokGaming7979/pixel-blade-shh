@@ -60,7 +60,6 @@ local function pressButtons(character)
     local prompts = {}
     for _, v in workspace:GetDescendants() do
         if v:IsA("ProximityPrompt") and v.Enabled then
-            -- Specifically target Vault.Button1 and Vault.Button2 proximity prompts
             local parentName = v.Parent.Name:lower()
             if parentName == "button1" or parentName == "button2" then
                 table.insert(prompts, v)
@@ -78,19 +77,30 @@ local function pressButtons(character)
     end
 end
 
--- Improved boss room detection and teleport
+-- Improved boss room detection and teleport to Atticus
 local function enterFinalBossRoom(character)
+    -- Teleport near Atticus boss if found
+    local atticus = workspace:FindFirstChild("Atticus")
+    if atticus and atticus:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = atticus.HumanoidRootPart.CFrame + Vector3.new(0, 5, 0)
+        task.wait(1.5)
+        return true
+    end
+
+    -- Fallback: check by bossroom naming patterns
     for _, v in workspace:GetDescendants() do
         if v:IsA("BasePart") then
             local lname = v.Name:lower()
             local parentName = v.Parent and v.Parent.Name:lower() or ""
             if lname:find("bossroom") or lname:find("finalroom") or parentName:find("bossroom") or parentName:find("finalroom") then
                 character.HumanoidRootPart.CFrame = v.CFrame + Vector3.new(0, 3, 0)
-                task.wait(1.5) -- Wait for boss to spawn
+                task.wait(1.5)
                 return true
             end
         end
     end
+
+    -- Final fallback folder check
     local finalBossFolder = workspace:FindFirstChild("FinalBossRoom")
     if finalBossFolder then
         local part = finalBossFolder:FindFirstChildWhichIsA("BasePart")
@@ -100,6 +110,7 @@ local function enterFinalBossRoom(character)
             return true
         end
     end
+
     return false
 end
 
