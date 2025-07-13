@@ -34,9 +34,9 @@ local function room(character)
     for _,v in workspace:GetChildren() do   
         if v:FindFirstChild("ExitZone") then
             character.HumanoidRootPart.CFrame = v.ExitZone.CFrame
-            task.wait(0.25)
+            task.wait(0.1)
             character.HumanoidRootPart.CFrame = CFrame.new(v:GetPivot().Position)
-            task.wait(0.25)
+            task.wait(0.1)
         end
     end
     roomcheck = false
