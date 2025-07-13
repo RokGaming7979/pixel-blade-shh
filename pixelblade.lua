@@ -77,17 +77,16 @@ local function pressButtons(character)
     end
 end
 
--- Improved boss room detection and teleport to Atticus
+-- Improved boss room detection and teleport to Atticus with offset
 local function enterFinalBossRoom(character)
-    -- Teleport near Atticus boss if found
     local atticus = workspace:FindFirstChild("Atticus")
     if atticus and atticus:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = atticus.HumanoidRootPart.CFrame + Vector3.new(0, 5, 0)
+        -- Teleport behind and above Atticus to trigger the fight properly
+        character.HumanoidRootPart.CFrame = atticus.HumanoidRootPart.CFrame * CFrame.new(0, 5, -10)
         task.wait(1.5)
         return true
     end
 
-    -- Fallback: check by bossroom naming patterns
     for _, v in workspace:GetDescendants() do
         if v:IsA("BasePart") then
             local lname = v.Name:lower()
@@ -100,7 +99,6 @@ local function enterFinalBossRoom(character)
         end
     end
 
-    -- Final fallback folder check
     local finalBossFolder = workspace:FindFirstChild("FinalBossRoom")
     if finalBossFolder then
         local part = finalBossFolder:FindFirstChildWhichIsA("BasePart")
