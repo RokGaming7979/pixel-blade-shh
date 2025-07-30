@@ -10,12 +10,13 @@ end
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "NameLog"
 screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
 screenGui.Parent = player:WaitForChild("PlayerGui")
 
--- Main Frame (holds everything)
+-- Main Frame
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 420, 0, 320)
-mainFrame.Position = UDim2.new(0, 10, 0, 60)
+mainFrame.Size = UDim2.new(0, 600, 0, 400)
+mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 mainFrame.BorderSizePixel = 0
 mainFrame.Parent = screenGui
@@ -38,18 +39,18 @@ end)
 
 -- ScrollFrame
 local scrollFrame = Instance.new("ScrollingFrame")
-scrollFrame.Size = UDim2.new(1, -10, 1, -34)
-scrollFrame.Position = UDim2.new(0, 5, 0, 30)
+scrollFrame.Size = UDim2.new(1, -20, 1, -40)
+scrollFrame.Position = UDim2.new(0, 10, 0, 30)
 scrollFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 scrollFrame.BorderSizePixel = 0
 scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-scrollFrame.ScrollBarThickness = 6
 scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scrollFrame.ScrollBarThickness = 8
 scrollFrame.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
-scrollFrame.ClipsDescendants = false
+scrollFrame.ClipsDescendants = true
 scrollFrame.Parent = mainFrame
 
--- Content Frame
+-- Content Frame inside scroll
 local contentFrame = Instance.new("Frame")
 contentFrame.BackgroundTransparency = 1
 contentFrame.Size = UDim2.new(1, 0, 0, 0)
