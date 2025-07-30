@@ -1,3 +1,5 @@
+print("Loaded version 1.1")
+
 -- Setup
 local player = game:GetService("Players").LocalPlayer
 
