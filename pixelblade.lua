@@ -1,5 +1,3 @@
-print("Loaded version 1.1")
-
 -- Setup
 local player = game:GetService("Players").LocalPlayer
 
@@ -34,7 +32,6 @@ closeButton.Font = Enum.Font.SourceSansBold
 closeButton.TextSize = 18
 closeButton.Parent = mainFrame
 
--- Close logic
 closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
@@ -52,10 +49,10 @@ scrollFrame.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
 scrollFrame.ClipsDescendants = true
 scrollFrame.Parent = mainFrame
 
--- Content Frame inside scroll
+-- Content Frame (inside the scroll frame)
 local contentFrame = Instance.new("Frame")
-contentFrame.BackgroundTransparency = 1
 contentFrame.Size = UDim2.new(1, 0, 0, 0)
+contentFrame.BackgroundTransparency = 1
 contentFrame.AutomaticSize = Enum.AutomaticSize.Y
 contentFrame.Parent = scrollFrame
 
@@ -63,28 +60,32 @@ local layout = Instance.new("UIListLayout")
 layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Parent = contentFrame
 
--- TextLabel
-local textLabel = Instance.new("TextLabel")
-textLabel.Name = "LogText"
-textLabel.BackgroundTransparency = 1
-textLabel.Size = UDim2.new(1, -10, 0, 0)
-textLabel.Position = UDim2.new(0, 5, 0, 0)
-textLabel.Font = Enum.Font.Code
-textLabel.TextColor3 = Color3.new(1, 1, 1)
-textLabel.TextXAlignment = Enum.TextXAlignment.Left
-textLabel.TextYAlignment = Enum.TextYAlignment.Top
-textLabel.TextWrapped = true
-textLabel.TextSize = 16
-textLabel.Text = "[GAME OBJECT NAME SCAN]\n"
-textLabel.AutomaticSize = Enum.AutomaticSize.Y
-textLabel.Parent = contentFrame
+-- Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, -10, 0, 25)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "[GAME OBJECT NAME SCAN]"
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.TextSize = 20
+titleLabel.TextWrapped = true
+titleLabel.Parent = contentFrame
 
--- Logger
+-- Logging function: adds each line as a separate label
 local function log(msg)
-    textLabel.Text = textLabel.Text .. msg .. "\n"
+    local entry = Instance.new("TextLabel")
+    entry.Size = UDim2.new(1, -10, 0, 20)
+    entry.BackgroundTransparency = 1
+    entry.Font = Enum.Font.Code
+    entry.TextSize = 16
+    entry.TextColor3 = Color3.new(1, 1, 1)
+    entry.TextXAlignment = Enum.TextXAlignment.Left
+    entry.Text = msg
+    entry.Parent = contentFrame
 end
 
--- Scan all instances
+-- Scan and log all objects
 for _, instance in ipairs(game:GetDescendants()) do
     log("🔹 " .. instance:GetFullName())
 end
