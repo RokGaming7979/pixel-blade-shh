@@ -43,9 +43,15 @@ end)
 
 -- Cleanup UI & screen blur
 task.spawn(function()
-    local ui = player:WaitForChild("Players"):WaitForChild("lIIIIIIllllIllIlIl")
-    if ui:FindFirstChild("health") then
-        ui.health = 40000
+    local ui = player:WaitForChild("PlayerGui"):WaitForChild("gameUI")
+    if ui:FindFirstChild("upgradeFrame") then
+        ui.upgradeFrame.Visible = false
+    end
+    if game.Lighting:FindFirstChild("deathBlur") then
+        game.Lighting.deathBlur:Destroy()
+    end
+    if game.Lighting:FindFirstChild("screenBlur") then
+        game.Lighting.screenBlur:Destroy()
     end
 end)
 
@@ -157,7 +163,7 @@ runService.RenderStepped:Connect(function()
                 end
 
                 if humanoid and v:GetAttribute("hadEntrance") and v:FindFirstChild("Health") then
-                    replicatedStorage.remotes.useAbility:FireServer("tornado")
+                    replicatedStorage.remotes.useAbility:FireServer("Tornado")
                     replicatedStorage.remotes.abilityHit:FireServer(humanoid, math.huge, {
                         ["stun"] = {["dur"] = 1}
                     })
