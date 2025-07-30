@@ -11,3 +11,9 @@ task.spawn(function()
         game.Lighting.screenBlur:Destroy()
     end
 end)
+
+
+Players.(username).PlayerGui.gameUI.upgradeFrame.UpgradeUI
+
+ -- hmm
+
