@@ -164,7 +164,7 @@ runService.RenderStepped:Connect(function()
 
                 if humanoid and v:GetAttribute("hadEntrance") and v:FindFirstChild("Health") then
                     replicatedStorage.remotes.useAbility:FireServer("Solar")
-                    replicatedStorage.remotes.abilityHit:FireServer(humanoid, math.huge, {
+                    replicatedStorage.remotes.abilityHit:FireServer(humanoid, 9999, {
                         ["stun"] = {["dur"] = 1}
                     })
                 end
