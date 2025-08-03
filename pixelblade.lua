@@ -6,7 +6,7 @@ local uis = game:GetService("UserInputService")
 
 -- Settings
 local roomcheck = false
-local autofarm = true
+local autofarm = false
 local killall = true
 local paused = false
 
